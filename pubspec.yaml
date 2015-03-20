@@ -9,5 +9,7 @@ environment:
 dependencies:
   args: any
   browser: any
+  frappe: any
   redstone: any
   react: any
+  shelf_static: any
