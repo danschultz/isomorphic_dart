@@ -10,6 +10,7 @@ dependencies:
   args: any
   browser: any
   frappe: any
+  http: any
   redstone: any
   react: any
   shelf_static: any
