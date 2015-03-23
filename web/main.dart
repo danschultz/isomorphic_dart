@@ -30,7 +30,7 @@ void main() {
     render(view, document.querySelector("#application"));
   });
 
-  // Append the new route to the history.
+  // Append route changes to the history.
   state
       .distinct((a, b) => a.path == b.path)
       .listen((state) {
