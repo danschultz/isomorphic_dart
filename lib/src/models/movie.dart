@@ -1,4 +1,4 @@
-part of isomorphic_dart;
+part of isomorphic_dart.models;
 
 class Movie {
   final Map<String, Object> _json;
@@ -6,7 +6,7 @@ class Movie {
   String get id => _json["imdbID"];
   Iterable<String> get actors => _json["Actors"].split(",");
   String get director => _json["Director"];
-  Uri get posterUri => _json.containsKey("Poster") ? Uri.parse(_json["Poster"]) : null;
+  Uri get posterUri => _json["Poster"] != "N/A" ? Uri.parse(_json["Poster"]) : null;
   String get rating => _json["Rating"];
   DateTime get releaseDate => DateTime.parse(_json["Released"]);
   String get title => _json["Title"];
@@ -15,6 +15,8 @@ class Movie {
   Movie._(this._json);
 
   factory Movie.fromJson(Map<String, Object> json) => new Movie._(json);
+
+  Map toJson() => new Map.from(_json);
 }
 
 // Example JSON response

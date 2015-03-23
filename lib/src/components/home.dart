@@ -1,4 +1,4 @@
-part of isomorphic_dart;
+part of isomorphic_dart.components;
 
 typedef HomeView(Subject<String> submit);
 

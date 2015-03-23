@@ -1,19 +1,38 @@
-part of isomorphic_dart;
+part of isomorphic_dart.components;
 
-typedef ApplicationView({String path, Map data});
+typedef ApplicationView({String path, Map data, ClientFactory clientFactory});
 
 var _applicationView = registerComponent(() => new _ApplicationView());
 
-ApplicationView applicationView = ({String path, Map data}) => _applicationView({"path": path, "data": data});
+ApplicationView applicationView = ({String path, Map data, ClientFactory clientFactory}) {
+  return _applicationView({"path": path, "data": data, "clientFactory": clientFactory});
+};
 
 class _ApplicationView extends Component {
-  String get _path => props["path"];
-  Map get _data => props["data"];
+  String get _path => state["path"];
+  Map get _data => state["data"];
+  ClientFactory get _clientFactory => props["clientFactory"];
 
   final _search = new Subject<String>();
+  final _selectMovie = new Subject<Movie>();
+
+  Map getInitialState() => {
+    "path": props["path"],
+    "data": props["data"]
+  };
 
   void componentDidMount(rootNode) {
-    _search.stream.listen((text) => print("submit: $text"));
+    var omdbApi = new OmdbClient(_clientFactory);
+    _search.stream
+        .flatMapLatest((term) => new EventStream.fromFuture(omdbApi.search(term).then((movies) => [term, movies])))
+        .listen((result) {
+          var term = result.first;
+          var movies = result.last;
+          setState({"path": "/search/${Uri.encodeComponent(term)}}", "data": {"movies": movies}});
+        });
+
+    _selectMovie.stream
+        .listen((movie) => setState({"path": "/movie/${movie.id}", "data": {"movie": movie.toJson()}}));
   }
 
   render() {
@@ -27,9 +46,11 @@ class _ApplicationView extends Component {
     if (path == "/") {
       return homeView(_search);
     } else if (path.startsWith("/search")) {
-      return searchResultsView(data["term"], data["movies"]);
+      var movies = data["movies"].map((json) => new Movie.fromJson(json));
+      return searchResultsView(data["term"], movies, _selectMovie);
     } else if (path.startsWith("/movie")) {
-      return movieDetailView(data["movie"]);
+      var movie = new Movie.fromJson(data["movie"]);
+      return movieDetailView(movie);
     } else {
       throw new ArgumentError("Undefined route `$path`");
     }

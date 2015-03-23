@@ -1,4 +1,4 @@
-library async;
+library isomorphic_dart.async;
 
 import 'dart:async';
 import 'package:frappe/frappe.dart';
@@ -8,9 +8,9 @@ class Subject<T> implements StreamController<T> {
 
   Subject._(this._controller);
 
-  factory Subject() => new Subject._(new StreamController());
+  factory Subject({bool sync: false}) => new Subject._(new StreamController(sync: sync));
 
-  factory Subject.broadcast() => new Subject._(new StreamController.broadcast());
+  factory Subject.broadcast({bool sync: false}) => new Subject._(new StreamController.broadcast(sync: sync));
 
   EventStream<T> get stream => new EventStream(_controller.stream);
   StreamSink<T> get sink => _controller.sink;

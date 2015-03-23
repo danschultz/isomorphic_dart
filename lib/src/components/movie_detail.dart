@@ -1,4 +1,4 @@
-part of isomorphic_dart;
+part of isomorphic_dart.components;
 
 typedef MovieDetailView(Movie movie);
 
