@@ -18,7 +18,7 @@ class _ApplicationView extends Component {
 
   void componentDidMount(rootNode) {
     _search.stream
-        .flatMapLatest((term) => new EventStream.fromFuture(_searchMovies(term)))
+        .flatMapLatest((term) => new EventStream.fromFuture(_searchMovies(term).then((movies) => [term, movies])))
         .listen((result) {
           var term = result.first;
           var movies = result.last;
@@ -31,9 +31,7 @@ class _ApplicationView extends Component {
 
   Future<Iterable<Movie>> _searchMovies(String term) {
     var omdbApi = new OmdbClient(_clientFactory);
-    return omdbApi.search(term)
-        .then((movies) => movies.map((json) => new Movie.fromJson(json)))
-        .then((movies) => [term, movies]);
+    return omdbApi.search(term).then((movies) => movies.map((json) => new Movie.fromJson(json)));
   }
 
   render() {
