@@ -1,5 +1,6 @@
 library isomorphic_dart.components;
 
+import 'dart:async';
 import 'package:frappe/frappe.dart';
 import 'package:react/react.dart';
 import 'package:isomorphic_dart/isomorphic_dart.dart';

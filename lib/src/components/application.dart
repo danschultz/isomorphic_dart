@@ -1,44 +1,45 @@
 part of isomorphic_dart.components;
 
-typedef ApplicationView({String path, Map data, ClientFactory clientFactory});
+typedef ApplicationView({State state, Subject<Action> updates, ClientFactory clientFactory});
 
 var _applicationView = registerComponent(() => new _ApplicationView());
 
-ApplicationView applicationView = ({String path, Map data, ClientFactory clientFactory}) {
-  return _applicationView({"path": path, "data": data, "clientFactory": clientFactory});
+ApplicationView applicationView = ({State state, Subject<Action> updates, ClientFactory clientFactory}) {
+  return _applicationView({"state": state, "updates": updates, "clientFactory": clientFactory});
 };
 
 class _ApplicationView extends Component {
-  String get _path => state["path"];
-  Map get _data => state["data"];
+  State get _state => props["state"];
+  Subject<Action> get _updates => props["updates"];
   ClientFactory get _clientFactory => props["clientFactory"];
 
   final _search = new Subject<String>();
   final _selectMovie = new Subject<Movie>();
 
-  Map getInitialState() => {
-    "path": props["path"],
-    "data": props["data"]
-  };
-
   void componentDidMount(rootNode) {
-    var omdbApi = new OmdbClient(_clientFactory);
     _search.stream
-        .flatMapLatest((term) => new EventStream.fromFuture(omdbApi.search(term).then((movies) => [term, movies])))
+        .flatMapLatest((term) => new EventStream.fromFuture(_searchMovies(term)))
         .listen((result) {
           var term = result.first;
           var movies = result.last;
-          setState({"path": "/search/${Uri.encodeComponent(term)}}", "data": {"movies": movies}});
+          _updates.add(showSearch(term, movies));
         });
 
     _selectMovie.stream
-        .listen((movie) => setState({"path": "/movie/${movie.id}", "data": {"movie": movie.toJson()}}));
+        .listen((movie) => _updates.add(showMovie(movie)));
+  }
+
+  Future<Iterable<Movie>> _searchMovies(String term) {
+    var omdbApi = new OmdbClient(_clientFactory);
+    return omdbApi.search(term)
+        .then((movies) => movies.map((json) => new Movie.fromJson(json)))
+        .then((movies) => [term, movies]);
   }
 
   render() {
     return div({}, [
         h1({}, "IMDB Dart"),
-        _renderPath(_path, _data),
+        _renderPath(_state.path, _state.data),
     ]);
   }
 
