@@ -18,8 +18,7 @@ class _MovieDetailView extends Component {
         posterImageView({"posterUri": _movie.posterUri}),
         div({}, [
             div({}, [
-                h2({}, _movie.title),
-                span({}, "(${_movie.year})")
+                h2({}, [_movie.title, span({"className": "title-year"}, " (${_movie.year})")]),
             ]),
             div({}, [
                 div({}, _movie.rating),

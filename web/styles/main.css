@@ -32,6 +32,10 @@ body {
   align-items: center;
 }
 
+.movie:last-child {
+  padding-right: 1em;
+}
+
 .movie-detail {
   align-items: flex-start;
 }
