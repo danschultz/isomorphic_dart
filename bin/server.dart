@@ -30,28 +30,29 @@ void main(List<String> args) {
 }
 
 @app.Route("/", responseType: "text/html")
-String root() => renderTemplate("/");
+String root() => renderTemplate(new State("/", {}));
 
 @app.Route("/search/:query", responseType: "text/html")
 Future<String> searchMovie(String query) {
   var omdbApi = new OmdbClient(() => new http.IOClient());
-  return omdbApi.search(query).then((movies) => renderTemplate("/search", data: {
+  var path = app.request.url.path;
+  return omdbApi.search(query).then((movies) => renderTemplate(new State(path, {
       "term": Uri.decodeQueryComponent(query),
       "movies": movies
-  }));
+  })));
 }
 
 @app.Route("/movie/:id", responseType: "text/html")
 Future<String> movie(String id) {
+  var path = app.request.url.path;
   var omdbApi = new OmdbClient(() => new http.IOClient());
   return omdbApi.getMovie(id).then((movie) {
-    return renderTemplate("/movie", data: {"movie": movie});
+    return renderTemplate(new State(path, {"movie": movie}));
   });
 }
 
-String renderTemplate(String path, {Map data: const {}}) {
-  var serverData = JSON.encode(data);
-  var state = new State(path, data);
+String renderTemplate(State state) {
+  var serverData = JSON.encode(state);
   return """
 <html>
 <head>

@@ -13,25 +13,28 @@ import 'package:isomorphic_dart/src/util/async.dart';
 void main() {
   react_client.setClientConfiguration();
 
-  var path = Uri.parse(window.location.href).path;
-  var serverData = document.querySelector("#server-data").text;
-  var data = JSON.decode(serverData);
-  var initialState = new State(path, data);
+  var serverData = JSON.decode(document.querySelector("#server-data").text);
+  var initialState = new State.fromJson(serverData);
 
   var updates = new Subject<Action<State>>.broadcast();
-  var state = updates.stream.scan(initialState, (state, action) => action(state));
+  var appState = updates.stream.scan(initialState, (state, action) => action(state));
   var historyState = window.onPopState
       .map((event) => JSON.decode(event.state))
       .map((json) => new State.fromJson(json));
 
   // Render the application with the updated state.
-  state.merge(historyState).listen((state) {
+  appState.merge(historyState).listen((state) {
     var view = applicationView(state: state, updates: updates, clientFactory: () => new BrowserClient());
     render(view, document.querySelector("#application"));
   });
 
-  // Append route changes to the history.
-  state
+  // Replace the current history with the state given by the server.
+  appState.take(1).listen((state) {
+    window.history.replaceState(JSON.encode(state), window.name, state.path);
+  });
+
+  // Append additional route changes to the history.
+  appState.skip(1)
       .distinct((a, b) => a.path == b.path)
       .listen((state) {
         window.history.pushState(JSON.encode(state), window.name, state.path);
