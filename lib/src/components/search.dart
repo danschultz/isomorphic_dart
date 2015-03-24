@@ -1,40 +1,37 @@
 part of isomorphic_dart.components;
 
-typedef SearchResultsView(String term, Iterable<Movie> movies, Subject<Movie> select);
+typedef SearchView(Subject<String> submit);
 
-var _searchResultsView = registerComponent(() => new _SearchResultsView());
+var _searchView = registerComponent(() => new _SearchView());
 
-SearchResultsView searchResultsView = (String term, Iterable<Movie> movies, Subject<Movie> select) {
-  return _searchResultsView({"term": term, "movies": movies, "select": select});
-};
+SearchView searchView = (Subject<String> submit) => _searchView({"submit": submit});
 
-class _SearchResultsView extends Component {
-  String get _term => props["term"];
-  Iterable<Movie> get _movies => props["movies"];
-  Subject<Movie> get _select => props["select"];
+class _SearchView extends Component {
+  Subject<String> get _submit => props["submit"];
+  String get _text => state["text"];
+
+  final _onChange = new Subject<SyntheticFormEvent>();
+  final _onSubmit = new Subject<SyntheticFormEvent>();
+
+  Map getInitialState() => {"text": ""};
 
   void componentDidMount(rootNode) {
+    _onChange.stream
+        .map((event) => event.target.value)
+        .listen((text) => setState({"text": text}));
 
+    _onSubmit.stream
+        .map((_) => _text)
+        .listen((text) => _submit(text));
   }
 
   render() {
-    return div({}, [
-        h2({}, "Results for $_term"),
-        ul({}, _movies.map((movie) => renderMovie(movie)).toList())
-    ]);
-  }
-
-  renderMovie(Movie movie) {
-    var onLinkClick = new Subject<SyntheticEvent>(sync: true);
-    onLinkClick.stream
-        .doAction((event) => event.preventDefault())
-        .listen((_) => _select.add(movie));
-
-    var children = movie.posterUri != null ? [img({"src": movie.posterUri.toString()})] : [];
-    children.add(span({}, movie.title));
-
-    return li({}, [
-        a({"href": "/movie/${movie.id}", "onClick": onLinkClick}, children)
+    return div({"className": "search tile"}, [
+        div({}, "Search for a movie or TV show"),
+        input({"className": "search-field", "type": "text", "onChange": _onChange}, _text),
+        div({}, [
+            button({"className": "search-button", "onClick": _onSubmit}, "Search")
+        ])
     ]);
   }
 }

@@ -14,14 +14,28 @@ class _MovieDetailView extends Component {
   }
 
   render() {
-    return div({}, [
-        img({"src": _movie.posterUri.toString()}),
-        h2({}, [
-            div({}, _movie.title),
-            div({}, "(${_movie.releaseDate.year.toString()})")
-        ]),
-        div({}, _movie.rating),
-        div({}, _movie.plot)
+    return div({"className": "tile movie movie-detail"}, [
+        posterImageView({"posterUri": _movie.posterUri}),
+        div({}, [
+            div({}, [
+                h2({}, _movie.title),
+                span({}, "(${_movie.year})")
+            ]),
+            div({}, [
+                div({}, _movie.rating),
+                div({}, _movie.runtime),
+                div({}, _movie.releaseDate),
+            ]),
+            div({}, _movie.plot),
+            div({}, [
+                strong({}, "Director: "),
+                _movie.director
+            ]),
+            div({}, [
+                strong({}, "Stars: "),
+                _movie.actors.join(", ")
+            ]),
+        ])
     ]);
   }
 

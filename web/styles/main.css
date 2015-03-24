@@ -1,0 +1,58 @@
+body {
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.tile {
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  width: 400px;
+}
+
+.search {
+  text-align: center;
+}
+
+.search-field {
+
+}
+
+.search-button {
+
+}
+
+.results-count {
+  padding: 1em;
+}
+
+.movie {
+  display: flex;
+  align-items: center;
+}
+
+.movie-detail {
+  align-items: flex-start;
+}
+
+.poster-image {
+  background-color: lightgrey;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.poster-image img {
+  width: 100%;
+}
+
+.movie-summary .poster-image {
+  height: 108px;
+  min-width: 75px;
+  width: 75px;
+}
+
+.movie-detail .poster-image {
+  min-width: 200px;
+  width: 200px;
+}

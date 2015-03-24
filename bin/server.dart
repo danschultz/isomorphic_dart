@@ -56,6 +56,8 @@ String renderTemplate(String path, {Map data: const {}}) {
 <html>
 <head>
   <title>IMDB Dart</title>
+  <link type="text/css" rel="stylesheet" href="/styles/normalize.css">
+  <link type="text/css" rel="stylesheet" href="/styles/main.css">
   <script id="server-data" type="application/json">$serverData</script>
 </head>
 <body>

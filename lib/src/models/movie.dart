@@ -7,10 +7,12 @@ class Movie {
   Iterable<String> get actors => _json["Actors"].split(",");
   String get director => _json["Director"];
   Uri get posterUri => _json["Poster"] != "N/A" ? Uri.parse(_json["Poster"]) : null;
-  String get rating => _json["Rating"];
-  DateTime get releaseDate => DateTime.parse(_json["Released"]);
+  String get rating => _json["Rated"];
+  String get releaseDate => _json["Released"];
+  String get year => _json["Year"];
   String get title => _json["Title"];
   String get plot => _json["Plot"];
+  String get runtime => _json["Runtime"];
 
   Movie._(this._json);
 

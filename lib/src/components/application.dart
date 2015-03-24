@@ -36,14 +36,14 @@ class _ApplicationView extends Component {
 
   render() {
     return div({}, [
-        h1({}, "IMDB Dart"),
-        _renderPath(_state.path, _state.data),
+        searchView(_search),
+        _renderPath(_state.path, _state.data)
     ]);
   }
 
   _renderPath(String path, Map data) {
     if (path == "/") {
-      return homeView(_search);
+      return "";
     } else if (path.startsWith("/search")) {
       var movies = data["movies"].map((json) => new Movie.fromJson(json));
       return searchResultsView(data["term"], movies, _selectMovie);
