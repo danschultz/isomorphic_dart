@@ -13,6 +13,16 @@ An isomorphic web app using Dart and React. Search for and list information abou
 * [x] *Isomorphic routing.* The same routing code is used on the server and client.
 * [ ] *Animations.* Animate HTML elements when transitioning between different routes.
 
+## Challenges
+
+* Initializing the client from server state.
+  * Issue: When the client is initialized, React is going to rerender the DOM that was provided by the server. In order for the client to render the same DOM as the server, the server needs to pass it the state object that was used for rendering.
+  * Solution: The server writes the state as a JSON object in a script tag. The client reads the JSON from the script tag and uses it to rerender the DOM.
+* Rerendering state changes.
+  * Issue: State changes need to trigger a rerender of the DOM. A state change can happen either through user interaction with the app, or from a `onPopState` event when the user changes the browser's history. It'd be ideal if both of these scenarios could be handled through a single API (TODO why?).
+  * Solution: Use a stream controller to handle state changes triggered by interactions within the app. The stream controller is passed to the `ApplicationView` which adds `Action`s to it. Each action returns a new state object when invoked. By merging the action stream with the `onPopState` stream, we can tell React to rerender the DOM from a single location in the app.
+* History state serialization
+
 ## Running
 
 * `dart bin/server.dart`
