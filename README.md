@@ -16,11 +16,11 @@ An isomorphic web app using Dart and React. Search for and list information abou
 ## Challenges
 
 * Initializing the client from server state.
-  * Issue: When the client is initialized, React is going to rerender the DOM that was provided by the server. In order for the client to render the same DOM as the server, the server needs to pass it the state object that was used for rendering.
-  * Solution: The server writes the state as a JSON object in a script tag. The client reads the JSON from the script tag and uses it to rerender the DOM.
+  * Issue: When the client is initialized, React will replace the DOM that was provided by the server. In order for the client to render the same DOM as the server, the client needs to have the same state the server used for rendering.
+  * Solution: The server writes the state as a JSON object in a script tag. The client reads the JSON from the script tag and uses it to render the DOM.
 * Rerendering state changes.
-  * Issue: State changes need to trigger a rerender of the DOM. A state change can happen either through user interaction with the app, or from a `onPopState` event when the user changes the browser's history. It'd be ideal if both of these scenarios could be handled through a single API (TODO why?).
-  * Solution: Use a stream controller to handle state changes triggered by interactions within the app. The stream controller is passed to the `ApplicationView` which adds `Action`s to it. Each action returns a new state object when invoked. By merging the action stream with the `onPopState` stream, we can tell React to rerender the DOM from a single location in the app.
+  * Issue: State changes need to trigger a rerender of the DOM. State changes can happen either through user interaction within the app, or from an `onPopState` event from the browser. It'd be ideal if both of these scenarios could be handled from a central location (TODO why?).
+  * Solution: Use a stream controller to handle state changes triggered by interactions within the app. The stream controller is passed to the `ApplicationView` which adds `Action`s that encapsulate a state change. Each action returns a new `State` object when invoked. By merging the action stream with the `onPopState` stream, we can tell React to rerender the DOM from a single location in the app.
 * History state serialization
 
 ## Running
