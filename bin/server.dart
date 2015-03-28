@@ -43,6 +43,12 @@ Future<String> searchMovie(String query) async {
   }));
 }
 
+@app.Route("/search", responseType: "text/html")
+void searchMovieWithQuery(@app.QueryParam("q") String query) {
+  // Forward /search?q=movie to /search/movie to have pretty URLs
+  return app.redirect("/search/${Uri.encodeQueryComponent(query)}");
+}
+
 @app.Route("/movie/:id", responseType: "text/html")
 Future<String> movie(String id) async {
   var path = app.request.url.path;

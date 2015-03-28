@@ -11,7 +11,7 @@ class _SearchView extends Component {
   String get _text => state["text"];
 
   final _onChange = new Subject<SyntheticFormEvent>();
-  final _onSubmit = new Subject<SyntheticFormEvent>();
+  final _onSubmit = new Subject<SyntheticFormEvent>(sync: true);
 
   Map getInitialState() => {"text": ""};
 
@@ -21,16 +21,17 @@ class _SearchView extends Component {
         .listen((text) => setState({"text": text}));
 
     _onSubmit.stream
+        .doAction((event) => event.preventDefault())
         .map((_) => _text)
         .listen((text) => _submit(text));
   }
 
   render() {
-    return div({"className": "search tile"}, [
+    return form({"className": "search tile", "action": "/search", "method": "get", "onSubmit": _onSubmit}, [
         div({}, "Search for a movie or TV show"),
-        input({"className": "search-field", "type": "text", "onChange": _onChange}, _text),
+        input({"className": "search-field", "type": "text", "name": "q", "onChange": _onChange}, _text),
         div({}, [
-            button({"className": "search-button", "onClick": _onSubmit}, "Search")
+            button({"className": "search-button", "type": "submit"}, "Search")
         ])
     ]);
   }
