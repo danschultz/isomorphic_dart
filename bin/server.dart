@@ -24,7 +24,7 @@ void main(List<String> args) {
 
   react_server.setServerConfiguration();
 
-  app.setShelfHandler(createStaticHandler("../web", serveFilesOutsidePath: true));
+  app.setShelfHandler(createStaticHandler("web", serveFilesOutsidePath: true));
   app.setupConsoleLog();
   app.start(address: "localhost", port: port);
 }
