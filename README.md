@@ -16,7 +16,7 @@ An isomorphic web app using Dart and React. Search for and list information abou
 ## Challenges
 
 * Initializing the client from server state.
-  * Issue: When the client is initialized, React will replace the DOM that was provided by the server. In order for the client to render the same DOM as the server, the client needs to have the same state the server used for rendering.
+  * Issue: When the client is initialized, React will replace the DOM provided by the server. In order for the client to render the same DOM as the server, the client needs to have the same state as the server for rendering.
   * Solution: The server writes the state as a JSON object in a script tag. The client reads the JSON from the script tag and uses it to render the DOM.
 * Rerendering state changes.
   * Issue: State changes need to trigger a rerender of the DOM. State changes can happen either through user interaction within the app, or from an `onPopState` event from the browser. It'd be ideal if both of these scenarios could be handled from a central location.
