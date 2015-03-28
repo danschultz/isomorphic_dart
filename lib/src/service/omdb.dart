@@ -21,7 +21,12 @@ class OmdbClient {
     var client = _clientFactory();
     var uri = _baseUri.replace(queryParameters: {"s": term});
     var movies = JSON.decode(await client.read(uri))["Search"];
-    var ids = movies.map((movie) => movie["imdbID"]);
-    return Future.wait(ids.map((id) => getMovie(id)));
+
+    if (movies != null) {
+      var ids = movies.map((movie) => movie["imdbID"]);
+      return Future.wait(ids.map((id) => getMovie(id)));
+    } else {
+      return [];
+    }
   }
 }
