@@ -8,15 +8,25 @@ body {
   background-color: #fff;
   box-sizing: border-box;
   margin-bottom: 1em;
-  width: 400px;
+  width: 600px;
+}
+
+.application {
+  display: flex;
+  height: 100%;
+}
+
+.home {
+  align-self: center;
 }
 
 .search {
+  padding: 1em;
   text-align: center;
 }
 
 .search-field {
-
+  margin: 0.5em 0;
 }
 
 .search-button {
@@ -38,6 +48,24 @@ body {
 
 .movie-detail {
   align-items: flex-start;
+  align-self: center;
+}
+
+.movie-meta {
+  display: inline;
+}
+
+.movie-meta:not(:last-child) {
+  border-right: 1px solid grey;
+  padding-right: 0.5em;
+}
+
+.movie-meta:not(:first-child) {
+  padding-left: 0.5em;
+}
+
+.movie-meta-items, .movie-credit {
+  margin: 0.75em 0;
 }
 
 .poster-image {

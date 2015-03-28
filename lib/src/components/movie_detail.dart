@@ -9,10 +9,6 @@ MovieDetailView movieDetailView = (Movie movie) => _movieDetailView({"movie": mo
 class _MovieDetailView extends Component {
   Movie get _movie => props["movie"];
 
-  void componentDidMount(rootNode) {
-
-  }
-
   render() {
     return div({"className": "tile movie movie-detail"}, [
         posterImageView({"posterUri": _movie.posterUri}),
@@ -20,20 +16,22 @@ class _MovieDetailView extends Component {
             div({}, [
                 h2({}, [_movie.title, span({"className": "title-year"}, " (${_movie.year})")]),
             ]),
-            div({}, [
-                div({}, _movie.rating),
-                div({}, _movie.runtime),
-                div({}, _movie.releaseDate),
+            div({"className": "movie-meta-items"}, [
+                div({"className": "movie-meta"}, _movie.rating),
+                div({"className": "movie-meta"}, _movie.runtime),
+                div({"className": "movie-meta"}, _movie.releaseDate),
             ]),
             div({}, _movie.plot),
-            div({}, [
+            div({"className": "movie-credits"}, [
+              div({"className": "movie-credit"}, [
                 strong({}, "Director: "),
                 _movie.director
-            ]),
-            div({}, [
+              ]),
+              div({"className": "movie-credit"}, [
                 strong({}, "Stars: "),
                 _movie.actors.join(", ")
-            ]),
+              ])
+            ])
         ])
     ]);
   }

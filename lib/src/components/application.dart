@@ -35,18 +35,15 @@ class _ApplicationView extends Component {
   }
 
   render() {
-    return div({}, [
-        searchView(_search),
-        _renderPath(_state.path, _state.data)
-    ]);
+    return div({"className": "application"}, [_renderPath(_state.path, _state.data)]);
   }
 
   _renderPath(String path, Map data) {
     if (path == "/") {
-      return "";
+      return homeView(_search);
     } else if (path.startsWith("/search")) {
       var movies = data["movies"].map((json) => new Movie.fromJson(json));
-      return searchResultsView(data["term"], movies, _selectMovie);
+      return searchResultsView(data["term"], movies, _search, _selectMovie);
     } else if (path.startsWith("/movie")) {
       var movie = new Movie.fromJson(data["movie"]);
       return movieDetailView(movie);
