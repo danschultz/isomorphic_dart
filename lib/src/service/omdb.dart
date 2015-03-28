@@ -11,19 +11,17 @@ class OmdbClient {
 
   OmdbClient(this._clientFactory);
 
-  Future<Map> getMovie(String id) {
+  Future<Map> getMovie(String id) async {
     var client = _clientFactory();
     var uri = _baseUri.replace(queryParameters: {"i": id});
-    return client.read(uri)
-        .then((body) => JSON.decode(body));
+    return JSON.decode(await client.read(uri));
   }
 
-  Future<Iterable<Map>> search(String term) {
+  Future<Iterable<Map>> search(String term) async {
     var client = _clientFactory();
     var uri = _baseUri.replace(queryParameters: {"s": term});
-    return client.read(uri)
-        .then((body) => JSON.decode(body)["Search"])
-        .then((movies) => movies.map((movie) => movie["imdbID"]))
-        .then((ids) => Future.wait(ids.map((id) => getMovie(id))));
+    var movies = JSON.decode(await client.read(uri))["Search"];
+    var ids = movies.map((movie) => movie["imdbID"]);
+    return Future.wait(ids.map((id) => getMovie(id)));
   }
 }

@@ -23,7 +23,7 @@ class Subject<T> implements StreamController<T> {
 
   void add(T event) => _controller.add(event);
 
-  Future addStream(Stream<T> source, {bool cancelOnError}) => _controller.addStream(source, cancelOnError: cancelOnError);
+  Future addStream(Stream<T> source, {bool cancelOnError: true}) => _controller.addStream(source, cancelOnError: cancelOnError);
 
   void addError(Object error, [StackTrace stackTrace]) => _controller.addError(error, stackTrace);
 
