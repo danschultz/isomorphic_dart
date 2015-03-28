@@ -26,5 +26,5 @@ An isomorphic web app using Dart and React. Search for and list information abou
 
 ## Running
 
-* `dart bin/server.dart`
-* Open `http://localhost:8080` in your browser.
+* Run `dart bin/server.dart`
+* Open `http://localhost:8080` in your browser
