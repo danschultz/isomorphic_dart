@@ -13,18 +13,19 @@ import 'package:shelf_static/shelf_static.dart';
 
 void main(List<String> args) {
   var parser = new ArgParser()
-      ..addOption('port', abbr: 'p', defaultsTo: '8080');
+      ..addOption('port', abbr: 'p', defaultsTo: '8080')
+      ..addOption('serve_dir', defaultsTo: "web");
 
-  var result = parser.parse(args);
+  var params = parser.parse(args);
 
-  var port = int.parse(result['port'], onError: (val) {
+  var port = int.parse(params['port'], onError: (val) {
     stdout.writeln('Could not parse port value "$val" into a number.');
     exit(1);
   });
 
   react_server.setServerConfiguration();
 
-  app.setShelfHandler(createStaticHandler("web", serveFilesOutsidePath: true));
+  app.setShelfHandler(createStaticHandler(params["serve_dir"], serveFilesOutsidePath: true));
   app.setupConsoleLog();
   app.start(address: "localhost", port: port);
 }

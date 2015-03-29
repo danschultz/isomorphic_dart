@@ -2,9 +2,9 @@ part of isomorphic_dart.components;
 
 typedef PosterImageView(Uri posterUri);
 
-var posterImageView = registerComponent(() => new _PosterImageView());
+var _posterImageView = registerComponent(() => new _PosterImageView());
 
-//PosterImageView posterImageView = (Uri posterUri) => _posterImageView({"posterUri": posterUri});
+PosterImageView posterImageView = (Uri posterUri) => _posterImageView({"posterUri": posterUri});
 
 class _PosterImageView extends Component {
   Uri get _posterUri => props["posterUri"];

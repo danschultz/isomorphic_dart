@@ -3,7 +3,6 @@
 
 import 'dart:convert';
 import 'dart:html';
-import 'package:frappe/frappe.dart';
 import 'package:http/browser_client.dart';
 import 'package:react/react.dart';
 import 'package:react/react_client.dart' as react_client;

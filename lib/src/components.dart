@@ -10,7 +10,7 @@ import 'package:isomorphic_dart/src/util/http.dart';
 
 part 'components/application.dart';
 part 'components/home.dart';
-part 'components/search.dart';
 part 'components/search_results.dart';
-part 'components/poster_image.dart';
 part 'components/movie_detail.dart';
+part 'components/search.dart';
+part 'components/poster_image.dart';

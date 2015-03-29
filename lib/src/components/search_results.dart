@@ -14,10 +14,6 @@ class _SearchResultsView extends Component {
   Subject<String> get _search => props["search"];
   Subject<Movie> get _select => props["select"];
 
-  void componentDidMount(rootNode) {
-
-  }
-
   render() {
     return div({}, [
         searchView(_search),
@@ -34,8 +30,7 @@ class _SearchResultsView extends Component {
 
     return div({"className": "tile movie movie-summary"}, [
         a({"href": "/movie/${movie.id}", "onClick": onLinkClick}, [
-            // TODO(Dan): Figure out why class name doesn't get set.
-            posterImageView({"className": "poster-image-summary", "posterUri": movie.posterUri})
+            posterImageView(movie.posterUri)
         ]),
         a({"href": "/movie/${movie.id}", "onClick": onLinkClick}, [
             span({}, movie.title)
