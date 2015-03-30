@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:appengine/appengine.dart';
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
 import 'package:redstone/server.dart' as app;
@@ -10,24 +11,21 @@ import 'package:react/react_server.dart' as react_server;
 import 'package:isomorphic_dart/isomorphic_dart.dart';
 import 'package:isomorphic_dart/src/service/omdb.dart';
 import 'package:shelf_static/shelf_static.dart';
+import 'package:shelf_appengine/shelf_appengine.dart' as shelf_ae;
 
 void main(List<String> args) {
   var parser = new ArgParser()
-      ..addOption('port', abbr: 'p', defaultsTo: '8080')
       ..addOption('serve_dir', defaultsTo: "web");
 
   var params = parser.parse(args);
 
-  var port = int.parse(params['port'], onError: (val) {
-    stdout.writeln('Could not parse port value "$val" into a number.');
-    exit(1);
-  });
-
   react_server.setServerConfiguration();
 
-  app.setShelfHandler(createStaticHandler(params["serve_dir"], serveFilesOutsidePath: true));
+  app.setShelfHandler(shelf_ae.assetHandler(
+      directoryIndexServeMode: shelf_ae.DirectoryIndexServeMode.SERVE));
   app.setupConsoleLog();
-  app.start(address: "localhost", port: port);
+  app.setUp();
+  runAppEngine((req) => app.handleRequest(req));
 }
 
 @app.Route("/", responseType: "text/html")
@@ -71,7 +69,7 @@ String renderTemplate(State state) {
   <div id="application">
     ${renderToString(applicationView(state: state))}
   </div>
-  <script src="/packages/react/react.js"></script>
+  <script src="/packages/react/react_prod.js"></script>
   <script type="application/dart" src="/main.dart"></script>
   <script src="/packages/browser/dart.js"></script>
 </body>

@@ -7,10 +7,12 @@ description: >
 environment:
   sdk: '>=1.0.0 <2.0.0'
 dependencies:
+  appengine: any
   args: any
   browser: any
   frappe: any
   http: any
   redstone: any
   react: any
+  shelf_appengine: any
   shelf_static: any

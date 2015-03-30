@@ -1,0 +1,7 @@
+version: helloworld
+runtime: custom
+vm: true
+api_version: 1
+
+env_variables:
+  DART_PUB_SERVE:  'http://192.168.59.3:7777'
