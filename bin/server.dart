@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:appengine/appengine.dart';
@@ -14,18 +12,28 @@ import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_appengine/shelf_appengine.dart' as shelf_ae;
 
 void main(List<String> args) {
-  var parser = new ArgParser()
-      ..addOption('serve_dir', defaultsTo: "web");
+  var parser = new ArgParser();
+  parser
+      ..addOption('serve-dir', defaultsTo: "web")
+      ..addOption("host", defaultsTo: "localhost")
+      ..addOption("port", defaultsTo: "8080")
+      ..addFlag("app-engine", defaultsTo: true);
 
   var params = parser.parse(args);
 
   react_server.setServerConfiguration();
 
-  app.setShelfHandler(shelf_ae.assetHandler(
-      directoryIndexServeMode: shelf_ae.DirectoryIndexServeMode.SERVE));
   app.setupConsoleLog();
   app.setUp();
-  runAppEngine((req) => app.handleRequest(req));
+
+  if (params["app-engine"]) {
+    app.setShelfHandler(shelf_ae.assetHandler(
+        directoryIndexServeMode: shelf_ae.DirectoryIndexServeMode.SERVE));
+    runAppEngine((req) => app.handleRequest(req));
+  } else {
+    app.setShelfHandler(createStaticHandler(params["serve-dir"], serveFilesOutsidePath: true));
+    app.start(address: params["host"], port: int.parse(params["port"]), autoCompress: true);
+  }
 }
 
 @app.Route("/", responseType: "text/html")

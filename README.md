@@ -29,5 +29,14 @@ An isomorphic web app using Dart and React. Search for and list information abou
 
 ## Running
 
-* Run `dart bin/server.dart`
+### Local
+
+* Run `dart bin/server.dart --no-app-engine`
 * Open `http://localhost:8080` in your browser
+
+### App Engine (default)
+
+Take a look at Dart's AppEngine [guide](https://www.dartlang.org/server/google-cloud-platform/app-engine/) for setting up Docker and AppEngine for Dart.
+
+* Run `gcloud preview app run app.yaml`
+
