@@ -8,13 +8,12 @@ An isomorphic web app using Dart and React. Search for and list information abou
 
 * [x] *Server side rendering.* All entry points are rendered using React components. These entry points include:
   * `/`
-  * `/search/:movie_name`
+  * `/search`
   * `/search/?q=:movie_name`
   * `/movie/:imdb_id`
 * [x] *Progressive enhancement.* The app doesn't require client-side Dart or JS to function. All search fields and links will work in cases where the client-side code is still downloading, or the user has disabled JS.
 * [x] *History API.* Client updates the browser's history API on screen transitions, and responds to history changes.
 * [x] *Isomorphic routing.* The same routing code is used on the server and client.
-* [ ] *Animations.* Animate HTML elements when transitioning between different routes.
 
 ## Challenges
 

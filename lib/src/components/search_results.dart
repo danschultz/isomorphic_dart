@@ -15,10 +15,18 @@ class _SearchResultsView extends Component {
   Subject<Movie> get _select => props["select"];
 
   render() {
+    return _term.isEmpty ? renderWithoutTerm() : renderWithTerm();
+  }
+
+  renderWithoutTerm() {
+    return homeView(_search);
+  }
+
+  renderWithTerm() {
     return div({}, [
-        searchView(_search),
-        h2({"className": "tile results-count"}, "Results for \"$_term\""),
-        div({}, _movies.map((movie) => renderMovie(movie)).toList())
+      searchView(_search, text: _term),
+      h2({"className": "tile results-count"}, "Results for \"$_term\""),
+      div({}, _movies.map((movie) => renderMovie(movie)).toList())
     ]);
   }
 

@@ -39,21 +39,15 @@ void main(List<String> args) {
 @app.Route("/", responseType: "text/html")
 String root() => renderTemplate(new State("/", {}));
 
-@app.Route("/search/:query", responseType: "text/html")
-Future<String> searchMovie(String query) async {
+@app.Route("/search", responseType: "text/html")
+searchMovieWithQuery(@app.QueryParam("q") String query) async {
   var omdbApi = new OmdbClient(() => new http.IOClient());
-  var path = app.request.url.path;
+  var path = app.request.url.toString();
 
   return renderTemplate(new State(path, {
-    "term": Uri.decodeQueryComponent(query),
+    "term": query != null ? Uri.decodeQueryComponent(query) : "",
     "movies": await omdbApi.search(query)
   }));
-}
-
-@app.Route("/search", responseType: "text/html")
-void searchMovieWithQuery(@app.QueryParam("q") String query) {
-  // Forward /search?q=movie to /search/movie to have pretty URLs
-  return app.redirect("/search/${Uri.encodeQueryComponent(query)}");
 }
 
 @app.Route("/movie/:id", responseType: "text/html")

@@ -79,12 +79,19 @@ body {
 }
 
 .movie-summary .poster-image {
-  height: 108px;
   min-width: 75px;
   width: 75px;
+}
+
+.movie-summary .poster-image:empty {
+  height: 108px;
 }
 
 .movie-detail .poster-image {
   min-width: 200px;
   width: 200px;
+}
+
+.movie-detail .poster-image:empty {
+  height: 300px;
 }
