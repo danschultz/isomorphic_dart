@@ -2,7 +2,7 @@
 
 An isomorphic web app using Dart and React. Search for and list information about movies and TV shows. Checkout the working demo [here][demo].
 
-![Screenshot](screenshot.jpg)
+[![Screenshot](screenshot.jpg)][demo]
 
 ## Features
 
