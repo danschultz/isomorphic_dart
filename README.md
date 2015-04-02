@@ -1,6 +1,6 @@
 # An isomorphic Dart app
 
-An isomorphic web app using Dart and React. Search for and list information about movies and TV shows.
+An isomorphic web app using Dart and React. Search for and list information about movies and TV shows. Checkout the working demo [here][demo].
 
 ![Screenshot](screenshot.jpg)
 
@@ -39,3 +39,4 @@ Take a look at Dart's AppEngine [guide](https://www.dartlang.org/server/google-c
 
 * Run `gcloud preview app run app.yaml`
 
+[demo]: http://isormorphic-dart-demo.appspot.com
