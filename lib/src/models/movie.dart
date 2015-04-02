@@ -8,8 +8,9 @@ class Movie {
   String get rating {
     var releases = _json["releases"];
     var countries = releases != null ? releases["countries"] : null;
-    var primary = countries.firstWhere((country) => country["primary"], orElse: null);
-    return primary != null ? primary["certification"] : "Unrated";
+    var primary = countries.firstWhere((country) => country["primary"], orElse: () => null);
+    var rating = primary != null ? primary["certification"] : null;
+    return rating != null && rating.isNotEmpty ? rating : "Unrated";
   }
   String get releaseDate => _json["release_date"];
   String get year => releaseDate.split("-").first;

@@ -60,15 +60,17 @@ Future<String> movie(String id) async {
 String renderTemplate(State state) {
   var serverData = JSON.encode(state);
   return """
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset='utf-8'>
   <title>IMDB Dart</title>
   <link type="text/css" rel="stylesheet" href="/styles/normalize.css">
   <link type="text/css" rel="stylesheet" href="/styles/main.css">
   <script id="server-data" type="application/json">$serverData</script>
 </head>
 <body>
-  <div id="application">
+  <div id="application" class="viewport">
     ${renderToString(applicationView(state: state))}
   </div>
   <script src="/packages/react/react_prod.js"></script>
