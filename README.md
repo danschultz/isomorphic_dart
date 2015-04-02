@@ -19,29 +19,39 @@ An isomorphic web app using Dart and React. Search for and list information abou
 
 ### Initializing the client from server state
 
-When the client is initialized, React replaces the DOM provided by the server. In order for the client to render the same DOM as the server, it needs to have the same state the server used for rendering. To do this, the server writes the state as a JSON object in a script tag. The client reads the JSON from the script tag and uses it to render the DOM.
+When the client is initialized, React replaces the DOM provided by the server. In order for the client to render the same DOM as the server, it needs to have the same state the server used for rendering. To do this, the server writes its state as a JSON object in a script tag. The client then reads the JSON from the script tag and uses it to render the DOM.
 
 ### Rerendering state changes
 
 DOM rendering is treated as a stateless function, with the `State` object being used to represent the view's state. `State` objects are passed to an `ApplicationView` component which it uses for generating the DOM.
 
-To trigger state changes, a `StreamController` is passed to the `ApplicationView` which it adds `Action`s onto whenever a user interacts with the app. An action is a closure that is passed the current state and returns a new state. The application listens to the actions added to the stream controller, applies them, and rerenders the view. You can think of this as an endless loop of `Render -> User Action -> State Modification -> Render`.
+To trigger state changes, the `ApplicationView` is also passed a `StreamController`. When a user performs some interaction, the view adds an `Action` onto this stream controller. `Action`s are just closures that are passed the current state and return a new state. The application listens to actions added to the controller's stream, invokes them, and rerenders the view. You can think of this as an endless cycle of `Render -> User Action -> State Modification -> Render`.
 
 ### Dependencies on `dart:html` and `dart:io`
 
-So we can reuse our React components on the client and server, special care needs to be given so they don't depend on `dart:html` or `dart:io`. In this case, the application requires network calls to an external movies API, which depending on the environment requires either the `io` or `html` libraries. To solve this, the `MoviesApi` uses factories for generating the appropriate request objects depending on if we're in a server or browser environment.
+In order for React components to be reused on the client and server, special care needs to be given so they don't depend on `dart:html` or `dart:io`. This app requires network calls to an external movies API, which depending on the environment, will either need to use the network classes from `dart:io` or `dart:html`. To solve this, the `MoviesApi` uses factories for generating the appropriate request objects depending on if we're in a server or browser environment.
 
 ## Running
+
+Checkout the working demo [here][demo]. Otherwise, if you want to run it locally, there's a couple options listed below.
 
 ### App Engine (default)
 
 Take a look at Dart's AppEngine [guide](https://www.dartlang.org/server/google-cloud-platform/app-engine/) for setting up Docker and AppEngine for Dart.
 
 * Run `gcloud preview app run app.yaml`
+* Run `pub serve web --hostname 192.168.59.3 --port 7777`
+* Open `http://localhost:8080` in your browser
 
-### Without App Engine
+### Without App Engine (Non-Dartium)
+
+* Run `pub build`
+* Run `dart bin/server.dart --no-app-engine --serve-dir build/`
+* Open `http://localhost:8080` in your browser
+
+### Without App Engine (Dartium)
 
 * Run `dart bin/server.dart --no-app-engine`
-* Open `http://localhost:8080` in your browser
+* Open `http://localhost:8080` in your Dartium
 
 [demo]: http://isomorphic-dart-demo.appspot.com
