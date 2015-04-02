@@ -1,17 +1,17 @@
 part of isomorphic_dart.components;
 
-typedef ApplicationView({State state, Subject<Action> updates, ClientFactory clientFactory});
+typedef ApplicationView({State state, Subject<Action> updates, MoviesApi moviesApi});
 
 var _applicationView = registerComponent(() => new _ApplicationView());
 
-ApplicationView applicationView = ({State state, Subject<Action> updates, ClientFactory clientFactory}) {
-  return _applicationView({"state": state, "updates": updates, "clientFactory": clientFactory});
+ApplicationView applicationView = ({State state, Subject<Action> updates, MoviesApi moviesApi}) {
+  return _applicationView({"state": state, "updates": updates, "moviesApi": moviesApi});
 };
 
 class _ApplicationView extends Component {
   State get _state => props["state"];
   Subject<Action> get _updates => props["updates"];
-  ClientFactory get _clientFactory => props["clientFactory"];
+  MoviesApi get _moviesApi => props["moviesApi"];
 
   final _search = new Subject<String>();
   final _selectMovie = new Subject<Movie>();
@@ -22,16 +22,16 @@ class _ApplicationView extends Component {
         .listen((result) {
           var term = result.first;
           var movies = result.last;
-          _updates.add(showSearch(term, movies));
+          _updates.add(showSearchResults(term, movies));
         });
 
     _selectMovie.stream
         .listen((movie) => _updates.add(showMovie(movie)));
   }
 
-  Future<Iterable<Movie>> _searchMovies(String term) {
-    var omdbApi = new TmdbClient(_clientFactory);
-    return omdbApi.search(term).then((movies) => movies.map((json) => new Movie.fromJson(json)));
+  Future<Iterable<Movie>> _searchMovies(String term) async {
+    var results = await _moviesApi.search(term);
+    return results.map((json) => new Movie.fromJson(json));
   }
 
   render() {

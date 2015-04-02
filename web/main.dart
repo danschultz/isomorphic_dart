@@ -8,9 +8,12 @@ import 'package:react/react.dart';
 import 'package:react/react_client.dart' as react_client;
 import 'package:isomorphic_dart/isomorphic_dart.dart';
 import 'package:isomorphic_dart/src/util/async.dart';
+import 'package:isomorphic_dart/src/apis.dart';
 
 void main() {
   react_client.setClientConfiguration();
+
+  var moviesApi = new TmdbMoviesApi(() => new BrowserClient());
 
   var serverData = JSON.decode(document.querySelector("#server-data").text);
   var initialState = new State.fromJson(serverData);
@@ -23,7 +26,7 @@ void main() {
 
   // Render the application with the updated state.
   appState.merge(historyState).listen((state) {
-    var view = applicationView(state: state, updates: updates, clientFactory: () => new BrowserClient());
+    var view = applicationView(state: state, updates: updates, moviesApi: moviesApi);
     render(view, document.querySelector("#application"));
   });
 

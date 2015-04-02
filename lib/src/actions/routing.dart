@@ -1,6 +1,6 @@
 part of isomorphic_dart.actions;
 
-Action<State> showSearch(String term, Iterable<Movie> movies) {
+Action<State> showSearchResults(String term, Iterable<Movie> movies) {
   return (State state) {
     return new State("/search?q=${Uri.encodeQueryComponent(term)}", {
         "term": term,
