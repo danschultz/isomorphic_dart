@@ -17,19 +17,20 @@ class _MovieDetailView extends Component {
                 h2({}, [_movie.title, span({"className": "title-year"}, " (${_movie.year})")]),
             ]),
             div({"className": "movie-meta-items"}, [
-                div({"className": "movie-meta"}, _movie.rating),
-                div({"className": "movie-meta"}, _movie.runtime),
-                div({"className": "movie-meta"}, _movie.releaseDate),
+                div({"className": "movie-meta"}, "Rated: ${_movie.rating}"),
+                div({"className": "movie-meta"}, "Runtime: ${_movie.runtime} min"),
+                div({"className": "movie-meta"}, "Released: ${_movie.releaseDate}"),
             ]),
+            hr({"className": "separator"}),
             div({}, _movie.plot),
             div({"className": "movie-credits"}, [
               div({"className": "movie-credit"}, [
                 strong({}, "Director: "),
-                _movie.director
+                _movie.credits.director
               ]),
               div({"className": "movie-credit"}, [
                 strong({}, "Stars: "),
-                _movie.actors.join(", ")
+                _movie.credits.cast.take(3).join(", ")
               ])
             ])
         ])

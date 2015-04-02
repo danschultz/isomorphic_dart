@@ -30,7 +30,7 @@ class _ApplicationView extends Component {
   }
 
   Future<Iterable<Movie>> _searchMovies(String term) {
-    var omdbApi = new OmdbClient(_clientFactory);
+    var omdbApi = new TmdbClient(_clientFactory);
     return omdbApi.search(term).then((movies) => movies.map((json) => new Movie.fromJson(json)));
   }
 

@@ -7,7 +7,7 @@ import 'package:redstone/server.dart' as app;
 import 'package:react/react.dart';
 import 'package:react/react_server.dart' as react_server;
 import 'package:isomorphic_dart/isomorphic_dart.dart';
-import 'package:isomorphic_dart/src/service/omdb.dart';
+import 'package:isomorphic_dart/src/service/tmdb.dart';
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_appengine/shelf_appengine.dart' as shelf_ae;
 
@@ -41,7 +41,7 @@ String root() => renderTemplate(new State("/", {}));
 
 @app.Route("/search", responseType: "text/html")
 searchMovieWithQuery(@app.QueryParam("q") String query) async {
-  var omdbApi = new OmdbClient(() => new http.IOClient());
+  var omdbApi = new TmdbClient(() => new http.IOClient());
   var path = app.request.url.toString();
 
   return renderTemplate(new State(path, {
@@ -53,7 +53,7 @@ searchMovieWithQuery(@app.QueryParam("q") String query) async {
 @app.Route("/movie/:id", responseType: "text/html")
 Future<String> movie(String id) async {
   var path = app.request.url.path;
-  var omdbApi = new OmdbClient(() => new http.IOClient());
+  var omdbApi = new TmdbClient(() => new http.IOClient());
   return renderTemplate(new State(path, {"movie": await omdbApi.getMovie(id)}));
 }
 

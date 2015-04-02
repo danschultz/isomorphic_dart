@@ -3,16 +3,30 @@ part of isomorphic_dart.models;
 class Movie {
   final Map<String, Object> _json;
 
-  String get id => _json["imdbID"];
-  Iterable<String> get actors => _json["Actors"].split(",");
-  String get director => _json["Director"];
-  Uri get posterUri => _json["Poster"] != "N/A" ? Uri.parse(_json["Poster"]) : null;
-  String get rating => _json["Rated"];
-  String get releaseDate => _json["Released"];
-  String get year => _json["Year"];
-  String get title => _json["Title"];
-  String get plot => _json["Plot"];
-  String get runtime => _json["Runtime"];
+  int get id => _json["id"];
+  String get posterPath => _json["poster_path"];
+  String get rating {
+    var releases = _json["releases"];
+    var countries = releases != null ? releases["countries"] : null;
+    var primary = countries.firstWhere((country) => country["primary"], orElse: null);
+    return primary != null ? primary["certification"] : "Unrated";
+  }
+  String get releaseDate => _json["release_date"];
+  String get year => releaseDate.split("-").first;
+  String get title => _json["title"];
+  String get plot => _json["overview"];
+  int get runtime => _json["runtime"];
+  Credits get credits => new Credits.fromJson(_json["credits"]);
+
+  Uri get posterUri {
+    if (posterPath != null) {
+      var baseUri = Uri.parse("https://image.tmdb.org/t/p/w185");
+      var path = baseUri.pathSegments.toList()..add(posterPath.split("/").last);
+      return baseUri.replace(pathSegments: path);
+    } else {
+      return null;
+    }
+  }
 
   Movie._(this._json);
 
