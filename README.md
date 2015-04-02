@@ -39,4 +39,4 @@ Take a look at Dart's AppEngine [guide](https://www.dartlang.org/server/google-c
 
 * Run `gcloud preview app run app.yaml`
 
-[demo]: http://isormorphic-dart-demo.appspot.com
+[demo]: http://isomorphic-dart-demo.appspot.com
