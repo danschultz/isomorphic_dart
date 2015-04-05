@@ -14,10 +14,14 @@ class TmdbMoviesApi implements MoviesApi {
   }
 
   Future<Iterable<Map>> search(String term) async {
-    var response = _request("search/movie", params: {"query": term});
-    var results = JSON.decode(await response)["results"];
-    var ids = results.map((json) => json["id"]);
-    return Future.wait(ids.map((id) => getMovie(id)));
+    if (term != null && term.isNotEmpty) {
+      var response = _request("search/movie", params: {"query": term});
+      var results = JSON.decode(await response)["results"];
+      var ids = results.map((json) => json["id"]);
+      return Future.wait(ids.map((id) => getMovie(id)));
+    } else {
+      return [];
+    }
   }
 
   Future<String> _request(String path, {Map params: const {}}) {
