@@ -53,8 +53,10 @@ Checkout the working demo [here][demo]. Otherwise, if you want to run it locally
 
 Take a look at Dart's AppEngine [guide](https://www.dartlang.org/server/google-cloud-platform/app-engine/) for setting up Docker and AppEngine for Dart.
 
+* Run `boot2docker up`
+* Run `$(boot2docker shellinit)`
 * Run `gcloud preview app run app.yaml`
-* Run `pub serve web --hostname 192.168.59.3 --port 7777`
+* Run `pub serve web --hostname 192.168.59.3 --port 7777` in another terminal window
 * Open `http://localhost:8080` in your browser
 
 ### Without App Engine (Non-Dartium)
