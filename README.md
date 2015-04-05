@@ -15,7 +15,21 @@ An isomorphic web app using Dart and React. Search for and list information abou
 * [x] *History API.* Client updates the browser's history API on screen transitions, and responds to history changes.
 * [x] *Isomorphic routing.* The same routing code is used on the server and client.
 
+## Why Isomorphic?
+
+Single page applications are great for developers and for users. For developers, it offers a clean separation of concerns. Backend logic is isolated to the server, and view logic is isolated to the client, with the two communicating through some API. For users, it means navigation can happen quickly between different pages without having to do a full refresh of the page.
+
+There's a hitch though. Since the server is delegating what needs to be rendered to the client, the browser has to wait for the necessary JavaScript to load before it can start rendering. The client may also need to make additional requests to the API to load additional data.
+
+There's quite a bit of data out there that correlates perceived page load times to convertion rates. Kiss Metrics [claims](https://blog.kissmetrics.com/loading-time/) that every second in loading your page results in a 7% decrease in conversion. And, [According to Amazon](http://www.radware.com/Products/FastView/), every 100ms decrease in page load time, increases conversion by 1%.
+
+This is where an isomorphic approach comes in. The server sends fully-formed HTML to the browser for fast perceived performance. Once the JavaScript loads, the client takes over so we get the benefits of a single page application.
+
 ## Architecture
+
+### Shared view components on the server and client
+
+React's uses a virtual DOM for rendering, which allows views to be used on the client or server. The server renders the fully-formed HTML using `React.renderToString()`. Once the JavaScript is loaded, the client takes over and installs the necessary event handlers using `React.render()`.
 
 ### Initializing the client from server state
 
