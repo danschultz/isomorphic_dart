@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:appengine/appengine.dart';
 import 'package:args/args.dart';
 import 'package:http/http.dart' as http;
-import 'package:redstone/server.dart' as app;
+import 'package:redstone/redstone.dart' as app;
 import 'package:react/react.dart';
 import 'package:react/react_server.dart' as react_server;
 import 'package:isomorphic_dart/isomorphic_dart.dart';
@@ -11,20 +11,20 @@ import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_appengine/shelf_appengine.dart' as shelf_ae;
 import 'package:isomorphic_dart/src/apis.dart';
 
-void main(List<String> args) {
+main(List<String> args) async {
   var parser = new ArgParser();
   parser
       ..addOption('serve-dir', defaultsTo: "web")
       ..addOption("host", defaultsTo: "localhost")
       ..addOption("port", defaultsTo: "8080")
-      ..addFlag("app-engine", defaultsTo: true);
+      ..addFlag("app-engine", defaultsTo: false);
 
   var params = parser.parse(args);
 
   react_server.setServerConfiguration();
 
   app.setupConsoleLog();
-  app.setUp();
+  await app.redstoneSetUp();
 
   if (params["app-engine"]) {
     app.setShelfHandler(shelf_ae.assetHandler(
@@ -37,7 +37,7 @@ void main(List<String> args) {
 }
 
 @app.Route("/", responseType: "text/html")
-String root() => renderTemplate(new State("/", {}));
+String root() => renderTemplate(new State(app.request.url.toString(), {}));
 
 @app.Route("/search", responseType: "text/html")
 searchMovieWithQuery(@app.QueryParam("q") String query) async {

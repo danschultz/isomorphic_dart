@@ -13,7 +13,7 @@ dependencies:
   browser: any
   frappe: any
   http: any
-  redstone: any
+  redstone: 0.6.0-beta.1+3
   react: any
   shelf_appengine: any
   shelf_static: any
